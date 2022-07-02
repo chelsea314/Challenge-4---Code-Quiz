@@ -143,36 +143,50 @@ function saveInitials(){
 // When save button is clicked, showHighscores function
 btnEl.addEventListener('click', showHighScores);
 
+// Retrieves highScores div from HTML
+var userDataEl = document.getElementById('userData');
+
 // Saves initials and score to local storage
 // Hide initals screen, displays high scores screen
 function showHighScores(){ 
     localStorage.setItem("initials", inputEl.value);
     localStorage.setItem("score", score);
+    document.getElementById('welcome-screen').style.display = "none";
     document.getElementById('insertInitials').setAttribute('class', 'hidden');
     document.getElementById('highScores').setAttribute('class', '');
 
     // Get initials and score from local storage
     var getInitials = localStorage.getItem('initials');
     var getScore = localStorage.getItem('score');
+
+    // creates paragraph element; assigns it a variable name
+    var userData = document.createElement('p');
+
+    // creates a text node which contains the user initials and score
+    var userDataContent = document.createTextNode(getInitials + ": " + getScore);
+    // adds the text node to the paragraph;
+    userData.appendChild(userDataContent);
     
-    // Sets text content of p element to initials and score
-    document.getElementById('userInfo').innerHTML = getInitials + ": " + getScore;
+    // adds the paragraph to the highScores div; appears on page
+    userDataEl.appendChild(userData);
 }
-
-
-// WHY ISN'T THIS WORKING? EVENT LISTENERS NOT REGISTERING ONCE I ADD A NEWLY CREATED FUNCTION. IT WILL WORK WITH PREVIOUS FUNCTIONS
 
 // Gets buttons from HTML
 var goBackBtn = document.getElementById("goBack");
 var clearScores = document.getElementById("clearScoreBtn");
 
+
 // When Go Back button is clicked, sends to Welcome Screen
-goBackBtn.addEventListener("click", );
+goBackBtn.addEventListener("click", showWelcomeScreen);
+
 
 // Hides high scores, shows welcome screen
-function welcomeScreen(){
+function showWelcomeScreen(){
     document.getElementById('highScores').setAttribute('class', 'hidden');
     document.getElementById('welcome-screen').style.display = "block";
+    // Puts seconds back on timer; resets timer display
+    secondsLeft=45;
+    timeEl.textContent = '';
 }
 
 // When 'clear high scores' button is clicked, clears scores
@@ -182,4 +196,13 @@ clearScores.addEventListener("click", clearHighScores);
 function clearHighScores(){
     localStorage.removeItem('initials');
     localStorage.removeItem('score');
+
+    //removes high scores from screen 
+    let p = document.getElementById('userData');
+    p.remove();
 }
+
+
+var highScoresBtn = document.getElementById('viewScores');
+
+highScoresBtn.addEventListener("click",showHighScores);

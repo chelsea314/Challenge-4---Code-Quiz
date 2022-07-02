@@ -8,10 +8,11 @@
     <link rel="stylesheet" href="./assets/css/style.css" />
   </head>
   <header>
+    <button id = 'viewScores' type="button">View High Scores!</button>
     <h2 class="time" id="timer" style="text-align: end;"></h2>
   </header>
   <body>
-    <div id="welcome-screen">
+    <div class='show' id="welcome-screen">
         <h1>Coding Quiz Challenge</h1>
         <p>Try to answer all the following questions before the timer runs out.  For each question you choose correctly, you will earn 20 points. If you choose incorrectly, the timer will decrease by ten seconds and you will earn no points. Click start to begin the quiz and start the timer.</p>
         <button id = 'start-button' type="button">Start!</button>
@@ -39,9 +40,9 @@
     </div>
    
     
-    <div class="hidden" id="highScores">
-        <h1>High Scores</h1>
-        <p id="userInfo"></p>
+    <div id = 'highScores' class="hidden" >
+        <h1 >High Scores</h1>
+        <div id="userData"></div>
         <button id="goBack" type="button">Go Back</button>
         <button id="clearScoreBtn" type="button">Clear High Scores</button>
     </div>    
