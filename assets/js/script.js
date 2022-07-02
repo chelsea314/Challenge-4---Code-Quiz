@@ -158,3 +158,28 @@ function showHighScores(){
     // Sets text content of p element to initials and score
     document.getElementById('userInfo').innerHTML = getInitials + ": " + getScore;
 }
+
+
+// WHY ISN'T THIS WORKING? EVENT LISTENERS NOT REGISTERING ONCE I ADD A NEWLY CREATED FUNCTION. IT WILL WORK WITH PREVIOUS FUNCTIONS
+
+// Gets buttons from HTML
+var goBackBtn = document.getElementById("goBack");
+var clearScores = document.getElementById("clearScoreBtn");
+
+// When Go Back button is clicked, sends to Welcome Screen
+goBackBtn.addEventListener("click", );
+
+// Hides high scores, shows welcome screen
+function welcomeScreen(){
+    document.getElementById('highScores').setAttribute('class', 'hidden');
+    document.getElementById('welcome-screen').style.display = "block";
+}
+
+// When 'clear high scores' button is clicked, clears scores
+clearScores.addEventListener("click", clearHighScores);
+
+// Clears data from local storage
+function clearHighScores(){
+    localStorage.removeItem('initials');
+    localStorage.removeItem('score');
+}
