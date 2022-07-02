@@ -35,12 +35,14 @@ var questionArr = [
         crcAns: "All of the Above"
     },
 ]
-console.log('questionArr length: ' + questionArr.length);
 
 // Currect Question variable
 var currentQ;
 
-// When you click the start button, welcome screen will disappear, current Q will appear. 
+// Adds click event to start button; Once clicked, sends to start function
+startButton.addEventListener("click", start)
+
+// When you click the start button, welcome screen will disappear, currentQ will appear. 
 // Timer will start.
 function start(){
     document.getElementById('welcome-screen').style.display = "none";
@@ -65,6 +67,12 @@ function showQuestion() {
     btnD.textContent = questionArr[currentQ].choices[3];
     btnD.value = questionArr[currentQ].choices[3];
 }
+
+// Adds click events to each button; Once button is clicked, sends to handleAnswer function
+btnA.addEventListener("click", handleAnswer)
+btnB.addEventListener("click", handleAnswer)
+btnC.addEventListener("click", handleAnswer)
+btnD.addEventListener("click", handleAnswer)
 
 //Sets timer starting point 
 var secondsLeft = 45;
@@ -97,134 +105,56 @@ function handleAnswer(event) {
         score += 10; 
         document.getElementById('response').setAttribute("class", '');
         document.getElementById('response').innerHTML = "Correct!";
-        // allDone();
-        // console.log('CurrentQ: ' + currentQ);
-        // console.log(event.target);
-    // if not equal, subtract 10 points to the score, deduct 10 seconds from the timer and display 'incorrect!'    
+    // if not equal, subtract 10 points from the score, deduct 10 seconds from the timer and display 'incorrect!'    
     } else {
         secondsLeft -= 10;
         score -=10;
         document.getElementById('response').setAttribute("class", '');
         document.getElementById('response').innerHTML = "Incorrect!";
         document.getElementById('timer').innerHTML = secondsLeft;
-        // allDone();
-        console.log("currentQ: " + currentQ);
-        console.log(event.target);
     } 
-    
-
-    console.log("currentQ: " + currentQ); 
-    // console.log('element reference: ', event.target);
-    // console.log('real value in click handler: ', event.target.value);
-    console.log('score: ', score);
-    
 
     // Increase currentQ's index by 1 
     currentQ++;
+
     // run function showQuestion (again)
-    allDone()
-    // showQuestion()
-    console.log('------------');
+    allDone();
 }
 
+// Sends user to the initials input screen if they've completed all questions within the array. If not, sends user to the next question.
 function allDone(){
    if (currentQ + 1 >= questionArr.length){
-         console.log('if questionArr length: ' + questionArr.length);
-         var secondsLeft = 0;
         saveInitials();
     } else {
-        console.log('else questionArr length: ' + questionArr.length);
         showQuestion();
     }
 }
 
-startButton.addEventListener("click", start)
-btnA.addEventListener("click", handleAnswer)
-btnB.addEventListener("click", handleAnswer)
-btnC.addEventListener("click", handleAnswer)
-btnD.addEventListener("click", handleAnswer)
-
-
-
-
-
-var inputEl = document.getElementById("input");
+// Sets HTML elements as variables
 var btnEl = document.getElementById("saveBtn");
+var inputEl = document.getElementById("input")
 
+// Hide questions, shows initials input
 function saveInitials(){
     document.getElementById('questions').setAttribute('class', 'hidden')
     document.getElementById('insertInitials').setAttribute('class', '');
-
-    console.log(int);
-    var int = inputEl.value;
 }
 
-
-
-
-btnEl.addEventListener("click", saveInitials);
+// When save button is clicked, showHighscores function
 btnEl.addEventListener('click', showHighScores);
 
-var userInfo = {
-    initials: int,
-    score: score,
-}
-
-function showHighScores(){
-
-    
+// Saves initials and score to local storage
+// Hide initals screen, displays high scores screen
+function showHighScores(){ 
+    localStorage.setItem("initials", inputEl.value);
+    localStorage.setItem("score", score);
     document.getElementById('insertInitials').setAttribute('class', 'hidden');
     document.getElementById('highScores').setAttribute('class', '');
 
-  
-    document.getElementById('userInfo').textContent = userInfo.int;
-    document.getElementById('userInfo').textContent = userInfo.score;
-
-
-}
+    // Get initials and score from local storage
+    var getInitials = localStorage.getItem('initials');
+    var getScore = localStorage.getItem('score');
     
-
-
-
-/////////////////////////////
-// Tests
-// btnA.addEventListener("click", handleAnswer)
-// btnB.addEventListener("click", handleAnswer)
-// btnC.addEventListener("click", handleAnswer)
-// btnD.addEventListener("click", function (elem){
-//     if (elem.data-value === questionArr[currentQ].choices[3]);
-// }
-// );
-
-
-
-
-
-//////////////////////////////
-//        timer begins on click; welcome screen hides  
-//          
-//        question appears - ordered list - multiple choice    
-
-//        user chooses answer    
-//            target; on.click;    
-//        computer evaulates if answer is true    
-//            boolean - how do i set this?;     
-//        if true, earn points; else deduct time off clock, earn no points    
-//            object to store user score and initials    
-//                var userData = {initials:"", score:0}    
-//            add points to score with correct answers - if (answer = true){score + 10 }     
-//        confirm with 'correct' or 'incorrect' message that appears beneath the multiple choice list     
-//            hide/show on click    
-//        New question appears; repeat same process for each question    
-//            for loop (var = i, i < questions.length, i++){
-//             this is where i get confused
-//         }   
-//        Game ends when timer reaches 0, or user completes all questions    
-//            End the loop dependent on the timer; or end the loop when it completes questions.length; do i do this with Else if?    
-//        Display screen to input initials with final score    
-//            list display: score: (value of userData.score)     
-//        User inputs initials; submits    
-//            place for user to type; computer stores in userData.initials    
-//            Submit button; on.click change pages    
-//        Display screen with user initials and score; Given button option to "go back" or "clear high scores"    
-//        save all scores in view high scores link in top left of screen    
+    // Sets text content of p element to initials and score
+    document.getElementById('userInfo').innerHTML = getInitials + ": " + getScore;
+}
