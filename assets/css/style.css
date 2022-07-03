@@ -11,7 +11,11 @@
 }
 
 header{
-    background-color: #c1c1c1;
+    background-color: #8FC9A3;
     height: 100px
 }
 
+.center {
+    margin-left :200px;
+    margin-right: 200px;
+}

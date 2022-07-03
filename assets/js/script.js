@@ -55,7 +55,11 @@ function start(){
 // Sets the question content to the questionsArr questions content
 // Sets text content of buttons to the questionsArr choices content
 // Sets the value of each button to the string in the questionsArr choices
+// Sends user to initials page if they've completed the last question
 function showQuestion() {
+    if (currentQ === questionArr.length) {
+        saveInitials();
+    } else {   
     document.getElementById("question").textContent = questionArr[currentQ].question
 
     btnA.textContent = questionArr[currentQ].choices[0];
@@ -66,7 +70,8 @@ function showQuestion() {
     btnC.value = questionArr[currentQ].choices[2];
     btnD.textContent = questionArr[currentQ].choices[3];
     btnD.value = questionArr[currentQ].choices[3];
-}
+    }
+};
 
 // Adds click events to each button; Once button is clicked, sends to handleAnswer function
 btnA.addEventListener("click", handleAnswer)
@@ -75,7 +80,7 @@ btnC.addEventListener("click", handleAnswer)
 btnD.addEventListener("click", handleAnswer)
 
 //Sets timer starting point 
-var secondsLeft = 45;
+var secondsLeft = 60;
 
 // Timer
 function setTime() {
@@ -84,16 +89,17 @@ function setTime() {
         secondsLeft--;
         timeEl.textContent = secondsLeft + " seconds left"
 
-        if (secondsLeft <= 0 || currentQ + 1 >= questionArr.length) {
+        if (secondsLeft <= 0 || currentQ === questionArr.length) {
             // Stops execution of action at set interval
             clearInterval(timerInterval);
             // Timer displays new text: 'Quiz Complete'
             timeEl.textContent = "Quiz Complete"
             // Calls function to input user initials
-            saveInitials();
+            saveInitials(); 
         }
     }, 1000);
 }
+
 
 // Score starts at 0
 var score = 0;
@@ -113,21 +119,11 @@ function handleAnswer(event) {
         document.getElementById('response').innerHTML = "Incorrect!";
         document.getElementById('timer').innerHTML = secondsLeft;
     } 
-
+    
     // Increase currentQ's index by 1 
     currentQ++;
-
-    // run function showQuestion (again)
-    allDone();
-}
-
-// Sends user to the initials input screen if they've completed all questions within the array. If not, sends user to the next question.
-function allDone(){
-   if (currentQ + 1 >= questionArr.length){
-        saveInitials();
-    } else {
-        showQuestion();
-    }
+    // Runs function showQuestion again
+    showQuestion();
 }
 
 // Sets HTML elements as variables
@@ -138,6 +134,8 @@ var inputEl = document.getElementById("input")
 function saveInitials(){
     document.getElementById('questions').setAttribute('class', 'hidden')
     document.getElementById('insertInitials').setAttribute('class', '');
+    // Timer displays new text: 'Quiz Complete'
+    timeEl.textContent = "Quiz Complete"
 }
 
 // When save button is clicked, showHighscores function
@@ -175,17 +173,15 @@ function showHighScores(){
 var goBackBtn = document.getElementById("goBack");
 var clearScores = document.getElementById("clearScoreBtn");
 
-
 // When Go Back button is clicked, sends to Welcome Screen
 goBackBtn.addEventListener("click", showWelcomeScreen);
-
 
 // Hides high scores, shows welcome screen
 function showWelcomeScreen(){
     document.getElementById('highScores').setAttribute('class', 'hidden');
     document.getElementById('welcome-screen').style.display = "block";
     // Puts seconds back on timer; resets timer display
-    secondsLeft=45;
+    secondsLeft=60;
     timeEl.textContent = '';
 }
 
@@ -202,7 +198,6 @@ function clearHighScores(){
     p.remove();
 }
 
-
+// High Scores button links to show high scores screen when clicked
 var highScoresBtn = document.getElementById('viewScores');
-
-highScoresBtn.addEventListener("click",showHighScores);
+highScoresBtn.addEventListener("click", showHighScores);
